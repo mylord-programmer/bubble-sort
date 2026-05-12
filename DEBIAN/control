@@ -5,5 +5,5 @@ Priority: optional
 Architecture: amd64
 Maintainer: Vorotnikov <i913b03@voenmeh.ru>
 Depends: libc6 (>= 2.31)
-Description: Программа сортировки пузырьком (ЛР №1, вариант 3)
+Description: Программа сортировки пузырьком (ЛР №2, вариант 3)
  Простая программа на C++, которая сортирует массив целых чисел методом пузырька.
