@@ -36,9 +36,10 @@ int main() {
 
     bubble_sort(arr);
 
-    std::cout << "Sorted array:\n";
-    for (int x : arr) {
-        std::cout << x << ' ';
+    for (size_t i = 0; i < arr.size(); ++i) 
+    {
+        if (i > 0) std::cout << ' ';
+        std::cout << arr[i];
     }
     std::cout << '\n';
     return 0;
