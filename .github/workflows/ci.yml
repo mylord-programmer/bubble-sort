@@ -78,28 +78,32 @@ jobs:
           retention-days: 7
 
   deploy:
-  runs-on: ubuntu-latest
-  needs: package
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Download deb artifact
-      uses: actions/download-artifact@v4
-      with:
-        name: bubble-sort-deb
-        path: artifacts  # скачиваем во временную папку
+      - name: Download deb artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bubble-sort-deb
+          path: artifacts
 
-    - name: Prepare Docker context # Копируем deb-файл в корень репозитория (туда же, где Dockerfile) 
-      run: |
-        
-        cp artifacts/bubble-sort-pkg.deb ./bubble-sort-pkg.deb
-        ls -la bubble-sort-pkg.deb  # убедимся, что файл на месте
+      - name: Prepare Docker context
+        run: |
+          cp artifacts/bubble-sort-pkg.deb ./bubble-sort-pkg.deb
+          ls -la bubble-sort-pkg.deb
 
-    - name: Build Docker image
-      run: docker build -t bubble-sort .
+      - name: Build Docker image
+        run: docker build -t bubble-sort .
 
-    - name: Run container with test input # ... проверка кода возврата ...
-      run: |
-        echo -e "5\n3 8 1 4 6" | docker run --rm -i bubble-sort
-        
+      - name: Run container with test input
+        run: |
+          echo -e "5\n3 8 1 4 6" | docker run --rm -i bubble-sort
+          if [ $? -eq 0 ]; then
+            echo "Deploy stage passed: container exited with code 0"
+          else
+            echo "Deploy stage failed: container returned non-zero code"
+            exit 1
+          fi
