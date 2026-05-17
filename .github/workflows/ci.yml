@@ -109,6 +109,8 @@ jobs:
           IMAGE_NAME=ghcr.io/${{ github.repository_owner }}/bubble-sort
           docker build -t $IMAGE_NAME:latest .
           docker tag $IMAGE_NAME:latest $IMAGE_NAME:${{ github.run_number }}
+          # Дополнительно тегаем как bubble-sort для локального запуска
+          docker tag $IMAGE_NAME:latest bubble-sort:latest
 
       - name: Push Docker image
         run: |
