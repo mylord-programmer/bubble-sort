@@ -46,6 +46,11 @@ jobs:
       - name: Make binary executable
         run: chmod +x bubble-sort
 
+      - name: Install runtime dependencies for binary
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y prometheus-cpp-dev libcivetweb-dev
+
       - name: Make scripts executable
         run: chmod +x cicd/*.sh
 
