@@ -76,3 +76,34 @@ jobs:
           name: bubble-sort-deb
           path: build/bubble-sort-pkg.deb
           retention-days: 7
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: package
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Download deb artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: bubble-sort-deb
+          path: .
+
+      - name: Prepare Docker context
+        run: |
+          mv bubble-sort-pkg.deb deb-package.deb 2>/dev/null || true
+          ls -la  # убедимся, что файл на месте
+
+      - name: Build Docker image
+        run: docker build -t bubble-sort .
+
+      - name: Run container with test input
+        run: |
+          echo -e "5\n3 8 1 4 6" | docker run --rm -i bubble-sort
+          if [ $? -eq 0 ]; then
+            echo "Deploy stage passed: container exited with code 0"
+          else
+            echo "Deploy stage failed: container returned non-zero code"
+            exit 1
+          fi
