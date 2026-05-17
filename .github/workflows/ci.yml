@@ -77,11 +77,11 @@ jobs:
           path: build/bubble-sort-pkg.deb
           retention-days: 7
 
-    deploy:
+  deploy:
     runs-on: ubuntu-latest
     needs: package
     permissions:
-      packages: write   # даём разрешение на публикацию пакетов (образов)
+      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
