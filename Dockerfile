@@ -1,12 +1,13 @@
 FROM ubuntu:24.04
 
-# Копируем deb-пакет внутрь образа
-COPY bubble-sort-pkg.deb /tmp/bubble-sort-pkg.deb
+# Устанавливаем зависимости времени выполнения
+RUN apt-get update && apt-get install -y prometheus-cpp-dev libcivetweb-dev
 
-# Устанавливаем пакет и сразу чистим за собой
-RUN apt-get update && \
-    apt-get install -y /tmp/bubble-sort-pkg.deb && \
-    rm /tmp/bubble-sort-pkg.deb
+# Копируем исполняемый файл
+COPY bubble-sort /usr/local/bin/
 
-# При запуске контейнера сразу запускаем программу
-ENTRYPOINT ["bubble-sort"]
+# Открываем порты
+EXPOSE 8081
+
+# Команда по умолчанию
+CMD ["bubble-sort"]

@@ -7,7 +7,8 @@ DEBIAN_DIR = $(PKG)/DEBIAN
 CONTROL_FILE = DEBIAN/control
 
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++11
+CXXFLAGS = -Wall -Wextra -std=c++11 $(shell pkg-config --cflags prometheus-cpp-core civetweb)
+LDFLAGS = $(shell pkg-config --libs prometheus-cpp-core civetweb) -lpthread
 
 all: check deb
 
@@ -16,7 +17,7 @@ check:
 	@which dpkg-deb > /dev/null || (echo "dpkg-deb not found. Install dpkg-dev." && exit 1)
 
 $(BINARY): $(SRC)/main.cpp
-	$(CXX) $(CXXFLAGS) $< -o $@
+	$(CXX) $(CXXFLAGS) $< -o $@ $(LDFLAGS)
 
 deb: $(BINARY)
 	rm -rf $(BUILD)
@@ -33,4 +34,3 @@ run: $(BINARY)
 clean:
 	rm -f $(BINARY)
 	rm -rf $(BUILD)
-	

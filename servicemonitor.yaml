@@ -1,0 +1,16 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: bubble-sort-monitor
+  namespace: default
+  labels:
+    release: prometheus
+spec:
+  selector:
+    matchLabels:
+      app: bubble-sort
+  endpoints:
+  - port: "metrics"          
+    interval: 15s
+    scheme: http
+    path: /metrics
