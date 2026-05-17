@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential dpkg-dev
+          sudo apt-get install -y build-essential dpkg-dev pkg-config prometheus-cpp-dev libcivetweb-dev
 
       - name: Make scripts executable
         run: chmod +x cicd/*.sh
